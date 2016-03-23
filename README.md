@@ -34,4 +34,43 @@ Example Search index
             model = Example2
             fields = ('id', 'slug', 'title', 'example', 'pks')
             index = 'foo'
+            
+Model Setup
 
+    from searching.managers import ElasticSearchManager
+    from searching.mixins import ElasticSearchIndexed
+    
+    
+    class Example(ElasticSearchIndexed, model.Model):
+        slug = models.CharField(max_length=50, unique=True)
+        title = models.CharField(max_length=255)
+
+        objects = models.Manager()
+        search_objects = ElasticSearchManager()
+
+        @classmethod
+        def get_model_index(cls):
+            from example.search_indexes.indexes import ExampleIndex
+            return ExampleIndex
+
+
+Manual reindex all model
+
+    ./manage.py manual_indexing
+    
+Manual clean index
+ 
+    ./manage.py clear_index
+    
+    
+For filter and querieng you have to use elasticsearch-dsl way.
+
+
+
+Some settings:
+
+INDEXING_DEBUG_INFO = True  - logging info enable or False to disable(Default: True)
+
+POST_SAVE_INDEXING = True - enable index model after save.(Default: True)
+
+ 
