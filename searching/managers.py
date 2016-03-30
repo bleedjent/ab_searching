@@ -21,6 +21,3 @@ class ElasticSearchManager(models.Manager):
 
     def multi_match_query(self, **kwargs):
         return self.get_queryset().query(Q("multi_match", **kwargs))
-
-
-

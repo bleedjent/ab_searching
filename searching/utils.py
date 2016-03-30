@@ -14,6 +14,12 @@ def fields_to_mapping(model_index):
     if not _fields:
         _fields = [f.name for f in _meta.model._meta.fields]
 
+    _fields += [attrname for attrname in dir(model_index)
+                if not attrname.startswith('__') and
+                not callable(getattr(model_index, attrname)) and
+                attrname != 'instance' and
+                attrname not in _fields]
+
     for attr_name in _fields:
         if attr_name in _mapping.keys():  # skip already created key
             continue
