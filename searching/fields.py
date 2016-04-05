@@ -26,8 +26,6 @@ class BaseField(object):
         if value is None and self.attr is not None:
             value = getattr(instance, self.attr, None)
         if value and callable(value):
-            if self.name == 'makes':
-                import ipdb; ipdb.set_trace()
             value = value()
         if not value and not self.null:
             raise Exception('Field {0} doesn`t allow null values'.format(self.name))
